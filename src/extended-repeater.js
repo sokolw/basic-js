@@ -15,9 +15,52 @@ const { NotImplementedError } = require('../extensions/index.js');
  * => 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
  *
  */
-function repeater(/* str, options */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+
+//default separator = "+"
+//default additionSeparator = "|"
+
+function repeater(str, options) {
+  if(typeof (options) === "undefined"){
+    return str;
+  }
+  //по умолчанию
+  options.separator = options.separator ?? "+";
+  options.additionSeparator = options.additionSeparator ?? "|";
+  //доп
+  let additionString = '';
+  let resultString = '';
+
+  if(typeof (options.addition) !== "undefined"){
+    options.addition = String(options.addition);
+  }
+
+  if((options.addition ?? '').length > 0) { //проверяем на addition на его существование
+    if(options.additionRepeatTimes > 1) {
+      for (let times = 1; times <= options.additionRepeatTimes; times++) {
+        if(times === 1){
+          additionString = options.addition;
+        } else {
+          additionString += `${options.additionSeparator}${options.addition}`
+        }
+      }
+    } else {
+      additionString = options.addition;
+    }
+  }
+
+  if(options.repeatTimes > 1) {  //проверяем на повторения
+    //main repeat
+    for (let times = 1; times <= options.repeatTimes; times++) {
+      if(times === 1){
+        resultString = `${str}${additionString}`;
+      } else {
+        resultString += `${options.separator}${str}${additionString}`
+      }
+    }
+    return resultString;
+  } else {
+    return `${str}${additionString}`;
+  }
 }
 
 module.exports = {
